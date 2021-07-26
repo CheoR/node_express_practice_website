@@ -2,7 +2,6 @@ const express = require('express');
 
 const speakersRoute = require('./speakers');
 const feedbackRoute = require('./feedback');
-const { request } = require('express');
 
 const router = express.Router();
 
@@ -16,7 +15,7 @@ module.exports = ( params ) => {
   // console.log(`This is visit ${req.session.visitcount}`);
   // res.sendFile(path.join(__dirname, './static/index.html'));
   // where {} gets passed to index
-  res.render('pages/index', { pageTitle: 'Hola Cola Website' });
+  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index' });
  });
 
  router.use('/speakers', speakersRoute(params));
