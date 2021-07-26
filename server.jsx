@@ -3,6 +3,12 @@ const path = require('path');
 
 const routes = require('./routes');
 
+const FeedbackService = require('./services/FeedbackService');
+const SpeakersService = require('./services/SpeakerService');
+
+const feedbackService = new FeedbackService('./data/feedback.json');
+const speakersService = new SpeakersService('./data/speakers.json');
+
 const app = express();
 
 const PORT = 3000;
@@ -15,7 +21,13 @@ app.set('views', path.join(__dirname, './views'));
 app.use(express.static(path.join(__dirname, './static')));
 
 // catch-all 
-app.use('/', routes());
+app.use(
+  '/',
+  routes({
+    feedbackService,
+    speakersService,
+  })
+);
 
 // app.get('/speakers', (req, res) => {
 //  res.sendFile(path.join(__dirname, './static/speakers.html'));
