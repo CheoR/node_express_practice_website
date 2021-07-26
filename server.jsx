@@ -14,6 +14,8 @@ const app = express();
 
 const PORT = 3000;
 
+app.locals.siteName = "App-wide template variable";
+
 // in case of deployment
 app.set('trust proxy', 1);
 
@@ -28,9 +30,17 @@ app.use(
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
 
+app.locals.siteName = "Another App-wide template variable";
+
 // middleware
 app.use(express.static(path.join(__dirname, './static')));
 
+app.use(async (req, res, next) => {
+  const names = await speakersService.getNames();
+  res.locals.speakerNames = names;
+  console.log(res.locals);
+  return next();
+});
 // catch-all 
 app.use(
   '/',
