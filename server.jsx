@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cookieSession = require('cookie-session');
 
 const routes = require('./routes');
 
@@ -12,6 +13,16 @@ const speakersService = new SpeakersService('./data/speakers.json');
 const app = express();
 
 const PORT = 3000;
+
+// in case of deployment
+app.set('trust proxy', 1);
+
+app.use(
+  cookieSession({
+    'name': 'session',
+    'keys': ['klajdfFadf', 'jafi3Dadf3']
+  })
+);
 
 // config template engine
 app.set('view engine', 'ejs');
