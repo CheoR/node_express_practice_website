@@ -1,14 +1,15 @@
 {
-  "name": "CheoR",
+  "name": "node-express-practice",
   "version": "1.0.0",
   "description": "",
   "main": "server.jsx",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.jsx"
   },
   "keywords": [],
   "author": "CheoR",
   "license": "MIT",
-  "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
