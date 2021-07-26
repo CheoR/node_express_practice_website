@@ -1,0 +1,14 @@
+{
+  "name": "CheoR",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.jsx",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "CheoR",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
