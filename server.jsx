@@ -13,7 +13,9 @@ app.set('views', path.join(__dirname, './views'));
 app.use(express.static(path.join(__dirname, './static')));
 
 app.get('/', (req, res) => {
- res.sendFile(path.join(__dirname, './static/index.html'));
+ // res.sendFile(path.join(__dirname, './static/index.html'));
+ // where {} gets passed to index
+ res.render('pages/index', { pageTitle: 'Hola Cola Website' });
 });
 
 app.get('/speakers', (req, res) => {
