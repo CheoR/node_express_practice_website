@@ -4,13 +4,17 @@
   "description": "",
   "main": "server.jsx",
   "scripts": {
-    "start": "node server.jsx",
-    "nodemon": "nodemon --ignore feedback.json server.jsx"
+    "start": "nodemon ./server.jsx --exec babel-node -e jsx",
+    "nodemon": "nodemon --ignore feedback.json server.jsx",
+    "debug": "DEBUG=express:* nodemon ./server.jsx --exec babel-node -e jsx"
   },
   "keywords": [],
   "author": "CheoR",
   "license": "MIT",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1"
   },
