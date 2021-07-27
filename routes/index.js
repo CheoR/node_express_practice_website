@@ -6,7 +6,9 @@ const feedbackRoute = require('./feedback');
 const router = express.Router();
 
 module.exports = ( params ) => {
- router.get('/', (req, res) => {
+ const { speakersService } = params;
+
+ router.get('/', async (req, res) => {
   // for cookieSession
   // if(!req.session.visitcount) {
   //  req.session.visitcount = 0;
@@ -15,7 +17,9 @@ module.exports = ( params ) => {
   // console.log(`This is visit ${req.session.visitcount}`);
   // res.sendFile(path.join(__dirname, './static/index.html'));
   // where {} gets passed to index
-  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index' });
+  const topSpeakers = await speakersService.getList();
+  console.log(topSpeakers);
+  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index', topSpeakers });
  });
 
  router.use('/speakers', speakersRoute(params));
