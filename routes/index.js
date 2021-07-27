@@ -18,8 +18,9 @@ module.exports = ( params ) => {
   // res.sendFile(path.join(__dirname, './static/index.html'));
   // where {} gets passed to index
   const topSpeakers = await speakersService.getList();
+  const artwork = await speakersService.getAllArtwork();
   console.log(topSpeakers);
-  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index', topSpeakers });
+  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index', topSpeakers, artwork });
  });
 
  router.use('/speakers', speakersRoute(params));

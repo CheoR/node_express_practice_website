@@ -4,15 +4,17 @@ const router = express.Router();
 
 module.exports = ( params ) => {
  const { speakersService } = params;
- // since this is at the end of /speakers
  router.get('/', async (req, res) => {
   const speakers = await speakersService.getList();
-  return res.json(speakers);
+  const artwork = await speakersService.getAllArtwork();
+  res.render('layout', { pageTitle: 'Hola Cola Speakers', template: 'speakers', speakers, artwork });
  });
 
- router.get('/:shortname', (req, res) => {
-  return res.send(`${req.params.shortname}'s Detail Page`);
- });
+ router.get('/:shortname', async (req, res) => {
+  const speaker = await speakersService.getSpeaker(req.params.shortname);
+  const artwork = await speakersService.getArtworkForSpeaker(req.params.shortname);
+  res.render('layout', { pageTitle: 'Hola Cola Speaker Detail Page', template: 'speakers-detail', speaker, artwork});
+  });
 
  return router;
 };
