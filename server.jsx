@@ -27,6 +27,16 @@ app.use(
   })
 );
 
+/*
+Middleware for parsing application/json
+body-parser deprecidated, use express instead
+	depreciated
+	const bodyParser = require('body-parser');
+*/
+app.use(express.static(__dirname));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
 // config template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
@@ -40,7 +50,7 @@ app.use(async (req, res, next) => {
   try {
     const names = await speakersService.getNames();
     res.locals.speakerNames = names;
-    console.log(res.locals);
+    // console.log(res.locals);
     return next();
   } catch (err) {
     return next(err);
