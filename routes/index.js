@@ -8,7 +8,7 @@ const router = express.Router();
 module.exports = ( params ) => {
  const { speakersService } = params;
 
- router.get('/', async (req, res) => {
+ router.get('/', async (req, res, next) => {
   // for cookieSession
   // if(!req.session.visitcount) {
   //  req.session.visitcount = 0;
@@ -17,10 +17,16 @@ module.exports = ( params ) => {
   // console.log(`This is visit ${req.session.visitcount}`);
   // res.sendFile(path.join(__dirname, './static/index.html'));
   // where {} gets passed to index
-  const topSpeakers = await speakersService.getList();
-  const artwork = await speakersService.getAllArtwork();
-  console.log(topSpeakers);
-  res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index', topSpeakers, artwork });
+ 
+  // return next(new Error('Some error'));
+  try {
+   const topSpeakers = await speakersService.getList();
+   const artwork = await speakersService.getAllArtwork();
+   console.log(topSpeakers);
+   res.render('layout', { pageTitle: 'Hola Cola Website', template: 'index', topSpeakers, artwork });
+  } catch (err) {
+   return next(err);
+  }
  });
 
  router.use('/speakers', speakersRoute(params));
