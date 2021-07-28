@@ -14,11 +14,14 @@ module.exports = ( params ) => {
    const errors = request.session.feedback ? request.session.feedback.errors : false;
    request.session.feedback = {};
 
+   const successMessage = request.session.feedback ? request.session.feedback.message : false;
+
    return res.render('layout', {
     pageTitle: 'Feedback Page',
     template: 'feedback',
     feedback,
-    errors
+    errors,
+    successMessage,
    });
   } catch (err) {
    return next(err);
@@ -52,18 +55,28 @@ module.exports = ( params ) => {
      .escape()
      .withMessage('A message is required'),
   ],
-  (req, res) => {
+  async (req, res) => {
    const errors = validationResult(req);
   // console.log('from express body parser');
   // console.log(req.body);
   if (!errors.isEmpty()) {
-   request.session.feedback = {
+   req.session.feedback = {
      errors: errors.array(),
    };
-   return response.redirect('/feedback');
+   return res.redirect('/feedback');
   }
 
-  return res.send(`Feedback form posted`);
+  /*
+   Note: name, email, title, message not validated/sanitized and escaped by
+   express validator.
+  */
+  const { name, email, title, message } = req.body;
+  await feedbackService.addEntry(name, email, title, message);
+  req.session.feedback = {
+    message: 'Thank you for your feedback!',
+  };
+
+  return res.redirect('/feedback');
  });
 
  return router;
