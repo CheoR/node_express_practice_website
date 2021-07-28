@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
+const createError = require('http-errors');
 
 const routes = require('./routes');
 
@@ -36,11 +37,16 @@ app.locals.siteName = "Another App-wide template variable";
 app.use(express.static(path.join(__dirname, './static')));
 
 app.use(async (req, res, next) => {
-  const names = await speakersService.getNames();
-  res.locals.speakerNames = names;
-  console.log(res.locals);
-  return next();
+  try {
+    const names = await speakersService.getNames();
+    res.locals.speakerNames = names;
+    console.log(res.locals);
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 });
+
 // catch-all 
 app.use(
   '/',
@@ -53,6 +59,20 @@ app.use(
 // app.get('/speakers', (req, res) => {
 //  res.sendFile(path.join(__dirname, './static/speakers.html'));
 // });
+
+//  404 Page Not Found
+app.use((req, res, next) => {
+  return next(createError(404, 'File not found'));
+});
+
+app.use((err, req, res, next) => {
+  res.locals.message = err.message;
+  console.error(err);
+  const status = err.status || 500;
+  res.locals.status = status;
+  res.status(status);
+  res.render('error');
+});
 
 app.listen(PORT, () => {
  console.log(`Express server listenting on port ${PORT}`);
